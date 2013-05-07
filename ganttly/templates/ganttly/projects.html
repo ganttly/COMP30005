@@ -1,0 +1,15 @@
+{% extends 'base_loggedin.html' %}
+
+{% block content %}
+<h1>My Projects</h1>
+<ul class="project_list">
+	{% for project in project_list %}
+    <li>
+    	<a href="#">    	
+    		<div class="title">{{ project.name }}</div>
+    		Manager: {{ project.admin.first_name }} {{ project.admin.last_name }}
+    	</a>
+    </li>
+    {% endfor %}
+ </ul>
+{% endblock content %}
