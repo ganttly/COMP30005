@@ -26,8 +26,10 @@ def task_list(request, project_id):
     return render(request, 'ganttly/tasks.html', context)
 
 def project(request, project_id):
+    project = Project.objects.get(id=project_id)
+
     context = Context({
-    	'project': 'put project here',
+    	'project': project,
     })
 
     return render(request, 'ganttly/project.html', context)
