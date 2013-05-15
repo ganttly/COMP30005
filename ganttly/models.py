@@ -13,7 +13,7 @@ class Project(models.Model):
 class Task(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
-	user = models.ForeignKey(User)
+	assigned_to = models.ManyToManyField(User)
 	project = models.ForeignKey(Project)
 	start = models.DateTimeField('start date')
 	finish = models.DateTimeField('finish date')

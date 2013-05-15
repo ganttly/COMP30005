@@ -2,5 +2,18 @@
 
 {% block content %}
 <h1>My Tasks</h1>
+<ul class="project_list">
+    {% for task in task_list %}
+    <li>
+        <a href="{{task.id}}/">      
+            <div class="title">{{ task.name }}</div>
+            Assigned: 
+            {% for user in task.assigned_to.all %}
+                <br/>{{ user.first_name }} {{ user.last_name }}
+            {% endfor %}
+        </a>
+    </li>
+    {% endfor %}
+ </ul>
 
 {% endblock content %}
