@@ -2,14 +2,130 @@
 
 {% block content %}
 <h1>{{ task.name }}</h1>
+<p>
+    {{ task.description }}
+</p>
+
 <a href="../"><< Back to project</a>
+<br/>
+<br/>
 
-<br/><br/>
-
+<div style="float: left;">
 <dl>
-    <dt>Start:</dt><dd>{{ task.start.date }}</dd>
-    <dt>Finish:</dt><dd>{{ task.finish.date }}</dd>
+    <dt>Status:</dt><dd></dd>
+    <dt>Start:</dt><dd>{{ task.start }}</dd>
+    <dt>Finish:</dt><dd>{{ task.finish }}</dd>
     <dt>Started?</dt><dd>{{ task.has_started }}</dd>
+    <dt>Assigned to:</dt>
+        <dd>
+            <ul>
+                {% for user in task.assigned_to.all %}
+                <li>
+                    {{ user.first_name }} {{ user.last_name }}
+                </li>
+                {% endfor %}
+            </ul>
+        </dd>
 </dl>
+</div>
+<div style="float: left; padding-left: 50px;">
+<dl>
+    <dt>Comments</dt>
+        <dd>
+            <a href="#">New comment</a>
+            <br/><br/>
+            <ul class="comments">
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        sdf
+                    </p>
+                    <ul class="comments">
+                        <li>
+                            <b>First Lastname</b><br/>
+                            <i>March 1, 2013 - 3:30px</i><br/>
+                            <p>
+                                sdf
+                            </p>
+                            <ul class="comments">
+                                <li>
+                                    <b>First Lastname</b><br/>
+                                    <i>March 1, 2013 - 3:30px</i><br/>
+                                    <p>
+                                        sdf
+                                    </p>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        sdf
+                    </p>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        sdf
+                    </p>
+                </li>
+            </ul>
+        </dd>
+</dl>
+</div>
+<div style="float: left; padding-left: 50px;">
+    <dt>Files</dt>
+        <dd>
+            <a href="#">Upload file</a>
+            <br/><br/>
+            <ul class="files">
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+            </ul>
+        </dd>
 
+</div>
 {% endblock content %}

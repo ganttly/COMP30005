@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Project(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
-	date = models.DateTimeField('date published')
+	date = models.DateField('date published', auto_now=True)
 	admin = models.ForeignKey(User)
 
 	def __unicode__(self):
@@ -15,8 +15,8 @@ class Task(models.Model):
 	description = models.CharField(max_length=200)
 	assigned_to = models.ManyToManyField(User)
 	project = models.ForeignKey(Project)
-	start = models.DateTimeField('start date')
-	finish = models.DateTimeField('finish date')
+	start = models.DateField('start date')
+	finish = models.DateField('finish date')
 	has_started = models.BooleanField()
 	is_completed = models.BooleanField()
 
@@ -27,4 +27,11 @@ class Comment(models.Model):
 	comment = models.CharField(max_length=200)
 	user = models.ForeignKey(User)
 	posted = models.DateTimeField()
+	parent = models.ForeignKey('self',related_name='comment parent')
+
+class file(models.Model):
+	name = models.CharField(max_length=50)
+	location = models.CharField(max_length=200)
+	task = models.ForeignKey(Task)
+	added = models.DateTimeField('added date')
 

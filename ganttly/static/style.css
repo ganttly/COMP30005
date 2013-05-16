@@ -14,11 +14,11 @@ Red     A62424
 	font-family: "Helvetica Neue", Helvetica,Arial,sans-serif;
 	color: #2b2e36;
 	text-shadow: 0px 1px 0px #cecece;
+	line-height: 1.5;
 }
 
 body {
 	width: 100%;
-	overflow: hidden;
 }
 
 h1 {
@@ -34,13 +34,12 @@ a {
 }
 
 .project_list li:hover {
-	background: #eeeeee;
+/*	background: #eeeeee;*/
 }
 
 #header {
 	width: 100%;
 	height: 80px;
-	padding-left: 25px;
 	/*background: #2b2e36;*/
 	background: #458C6B;
 	color: white;
@@ -87,6 +86,7 @@ a {
 .project_list .title {
 	font-size: 24px;
 	color: #54877e;
+	font-weight: bold;
 }
 
 .task, .block {
@@ -96,7 +96,7 @@ a {
 
 .task {
 	width: 200px; 
-	line-height: 20px;
+	line-height: 1.5;
 	background: white;
 	text-align: right;
 }
@@ -110,7 +110,7 @@ a:hover {
 
 .block {
 	background:red; 
-	height: 20px;
+	height: 24px;
 }
 
 .upcoming {
@@ -184,12 +184,13 @@ a:hover {
 ::-webkit-scrollbar {
     width: 12px;
     height: 10px;
-    width: 5px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-button { 
 	
 }
+
 ::-webkit-scrollbar-track {
     border-radius: 10px;
     background: #eee;
@@ -197,18 +198,41 @@ a:hover {
  
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
+    background: #458C6B;
+}
+
+.gantt::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #eee;
+}
+ 
+.gantt::-webkit-scrollbar-thumb {
+    border-radius: 10px;
     background: #ccc;
 }
 
 dt {
 	clear: left;
 	float: left;
-	width: 90px;
+	width: 100px;
 	margin-right: 15px;
 	text-align: right;
+	font-weight: bold;
 }
 
 dd {
 	float: left;
 
+}
+
+li {
+	list-style: none;
+}
+
+.comments li, .files li {
+	margin-bottom: 15px;
+}
+
+.comments .comments {
+	margin: 15px 0px 0px 25px;
 }

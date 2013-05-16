@@ -28,7 +28,7 @@ def task_list(request, project_id):
 
 def project(request, project_id):
     project = Project.objects.get(id=project_id)
-    task_list = Task.objects.filter(project=project_id)
+    task_list = Task.objects.filter(project=project_id).order_by('start')
 
     total_days = 0
     first_date = 0

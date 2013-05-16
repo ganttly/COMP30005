@@ -11,7 +11,7 @@
 {% load ganttly_extras %}
 
 <style>
-    .clear {width:{{ first_date|countdays:last_date|multiply:20 }}px;}
+    .clear {width:{{ first_date|countdays:last_date|add:2|multiply:60 }}px;}
 </style>
 
 <div style="float:left;">
@@ -28,7 +28,7 @@
 </div>
 
 <div class="gantt">
-<div class="gantt_container" style="width: {{ first_date|countdays:last_date|multiply:20 }}px;">
+<div class="gantt_container" style="width: {{ first_date|countdays:last_date|add:2|multiply:60 }}px;">
     {% for x in first_date|drawdays:last_date %}
     <div class="marker">{{ x }}</div>
     {% endfor %}
@@ -54,8 +54,8 @@
             {% endif %}
             "
             style="
-                width:{{ task.start|countdays:task.finish|multiply:20 }}px;
-                margin-left: {{ first_date|countdays:task.start|multiply:20 }}px
+                width:{{ task.start|countdays:task.finish|add:1|multiply:60 }}px;
+                margin-left: {{ first_date|countdays:task.start|multiply:60 }}px
         ">
         </div>
         </a>
