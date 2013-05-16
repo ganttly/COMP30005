@@ -1,11 +1,15 @@
 from django import template
-from datetime import date
+from datetime import date, datetime
 
 register = template.Library()
 
 @register.filter(name='countdays')
 def countdays(start, finish):
-    return (finish - start).days * 3
+    diff = (finish - start)
+    if hasattr(diff, 'days'):
+        return diff.days * 3
+    else:
+        return 0
 
 @register.filter(name='add')
 def add(value, addition):
@@ -17,10 +21,21 @@ def multiply(value, multiplier):
 
 @register.filter(name="drawdays")
 def drawdays(start, finish):
-    num_days = (finish - start).days
+    diff = (finish - start)
+    num_days = 0
+
+    if hasattr(diff, 'days'):
+        num_days = (finish - start).days
+
     blocks = []
 
-    for x in range(0,num_days+1):
-        blocks.append(start.day+x)
+    for x in range(0,num_days):
+        if hasattr(start, 'day'):
+            blocks.append(start.day+x)
 
     return blocks
+
+@register.filter(name="is_overdue")
+def is_overdue(check_date):
+
+    return check_date < datetime.now()

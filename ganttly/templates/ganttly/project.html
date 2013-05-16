@@ -1,50 +1,68 @@
 {% extends 'base_loggedin.html' %}
 
-
 {% block content %}
 <h1>{{project.name}}</h1>
 <p>{{project.description}}</p>
-
-{% comment %}
-{{ first_date.date }} | 
-{{ last_date.date}} | 
-{{ total_days }}
-{% endcomment %}
+<br/>
+<a href="add">Add new task</a>
 
 <br/>
 
 {% load ganttly_extras %}
 
 <style>
-.task {float: left; width: 200px; line-height: 20px;}
-.block{float: left; background:red; height: 20px;}
-.upcoming{background: #cecece;}
-.overdue{background: #A62424;}
-.running{background: #458C6B;}
-.marker{float: left; width: 59px; height: 20px; border-left: 1px solid black;}
-.clear{border-bottom: 1px solid black; margin: 5px 0px 5px 0px; height: 5px;clear:both;width:{{ first_date|countdays:last_date|multiply:20|add:200 }}px;}
+    .clear {width:{{ first_date|countdays:last_date|multiply:20 }}px;}
 </style>
 
-<div class="task">&nbsp;</div>
-{% for x in first_date|drawdays:last_date %}
-<div class="marker">{{ x }}</div>
-{% endfor %}
-<div style="height: 10px; clear:both;"></div>
-
-{% for task in task_list %}
-    <div class="task">{{ task.name }}</div>
-    <div 
-        class="block
-        {% if 1 %}
-            upcoming
-        {% endif %}
-        "
-        style="
-            width:{{ task.start|countdays:task.finish|multiply:20 }}px;
-            margin-left: {{ first_date|countdays:task.start|multiply:20 }}px
-    ">
+<div style="float:left;">
+    <div class="marker" style="border: none;">
+        &nbsp;
     </div>
-    <div class="clear"></div>
+    <div style="height: 0px; clear:both;"></div>
+{% for task in task_list %}
+    <div class="task">
+        <a href="{{ task.id }}">{{ task.name }}</a>&nbsp;&nbsp;
+    </div>
+    <div class="clear_left"></div>
 {% endfor %}
+</div>
+
+<div class="gantt">
+<div class="gantt_container" style="width: {{ first_date|countdays:last_date|multiply:20 }}px;">
+    {% for x in first_date|drawdays:last_date %}
+    <div class="marker">{{ x }}</div>
+    {% endfor %}
+    <div style="height: 0px; clear:both;"></div>
+
+    {% for task in task_list %}
+    {% comment %}
+        <div class="task">
+            <a href="{{ task.id }}">{{ task.name }}&nbsp;&nbsp;</a>
+        </div>
+    {% endcomment %}
+        <a href="{{ task.id }}">
+        <div 
+            class="block
+            {% if task.is_completed %}
+                done
+            {% elif task.finish|is_overdue %}
+                overdue
+            {% elif task.has_started %}
+                running
+            {% else %}
+                upcoming
+            {% endif %}
+            "
+            style="
+                width:{{ task.start|countdays:task.finish|multiply:20 }}px;
+                margin-left: {{ first_date|countdays:task.start|multiply:20 }}px
+        ">
+        </div>
+        </a>
+        <div class="clear"></div>
+    {% endfor %}
+</div>
+<br/>
+</div>
 
 {% endblock content %}

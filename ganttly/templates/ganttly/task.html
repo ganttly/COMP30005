@@ -1,6 +1,15 @@
 {% extends 'base_loggedin.html' %}
 
 {% block content %}
-<h1>My Task</h1>
+<h1>{{ task.name }}</h1>
+<a href="../"><< Back to project</a>
+
+<br/><br/>
+
+<dl>
+    <dt>Start:</dt><dd>{{ task.start.date }}</dd>
+    <dt>Finish:</dt><dd>{{ task.finish.date }}</dd>
+    <dt>Started?</dt><dd>{{ task.has_started }}</dd>
+</dl>
 
 {% endblock content %}
