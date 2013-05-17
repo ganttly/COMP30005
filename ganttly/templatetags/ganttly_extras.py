@@ -21,17 +21,18 @@ def multiply(value, multiplier):
 
 @register.filter(name="drawdays")
 def drawdays(start, finish):
-    first = datetime(start.year, start.month, start.day, 0, 0, 0)
-    diff = (finish - start)
-    num_days = 0
-
-    if hasattr(diff, 'days'):
-        num_days = (finish - start).days
 
     blocks = []
 
-    for x in range(0,num_days+2):
-        if hasattr(start, 'day'):
+    if hasattr(start, 'day'):
+        first = datetime(start.year, start.month, start.day, 0, 0, 0)
+        diff = (finish - start)
+        num_days = 0
+
+        if hasattr(diff, 'days'):
+            num_days = (finish - start).days
+
+        for x in range(0,num_days+2):
             #blocks.append(start.day+x)
             blocks.append(first.day)
             first += timedelta(days=1)

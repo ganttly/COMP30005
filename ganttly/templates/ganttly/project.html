@@ -4,14 +4,19 @@
 <h1>{{project.name}}</h1>
 <p>{{project.description}}</p>
 <br/>
-<a href="add">Add new task</a>
+<ul class="menu">
+    <li><a href="add">Add new task</a></li>
+    <li><a href="#">Edit Project</a></li>
+    <li><a href="#">Delete Project</a></li>
+</ul>
+
 
 <br/>
 
 {% load ganttly_extras %}
 
 <style>
-    .clear {width:{{ first_date|countdays:last_date|add:2|multiply:60 }}px;}
+    .clear {width:{{ first_date|countdays:last_date|add:2|multiply:40 }}px;}
 </style>
 
 <div style="float:left;">
@@ -28,7 +33,7 @@
 </div>
 
 <div class="gantt">
-<div class="gantt_container" style="width: {{ first_date|countdays:last_date|add:2|multiply:60 }}px;">
+<div class="gantt_container" style="width: {{ first_date|countdays:last_date|add:2|multiply:40 }}px;">
     {% for x in first_date|drawdays:last_date %}
     <div class="marker">{{ x }}</div>
     {% endfor %}
@@ -54,8 +59,8 @@
             {% endif %}
             "
             style="
-                width:{{ task.start|countdays:task.finish|add:1|multiply:60 }}px;
-                margin-left: {{ first_date|countdays:task.start|multiply:60 }}px
+                width:{{ task.start|countdays:task.finish|add:1|multiply:40 }}px;
+                margin-left: {{ first_date|countdays:task.start|multiply:40 }}px
         ">
         </div>
         </a>

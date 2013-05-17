@@ -12,10 +12,21 @@
 
 <div style="float: left;">
 <dl>
-    <dt>Status:</dt><dd></dd>
+    <dt>Status:</dt>
+    <dd>{% load ganttly_extras %}
+        {% if task.is_completed %}
+            Finished
+        {% elif task.finish|is_overdue %}
+            Overdue
+        {% elif task.has_started %}
+            Running
+        {% else %}
+            Upcoming
+        {% endif %}
+    </dd>
     <dt>Start:</dt><dd>{{ task.start }}</dd>
     <dt>Finish:</dt><dd>{{ task.finish }}</dd>
-    <dt>Started?</dt><dd>{{ task.has_started }}</dd>
+    <dt>Started?</dt><dd>{{ task.has_started }} <a href="start">[Start]</a></dd>
     <dt>Assigned to:</dt>
         <dd>
             <ul>

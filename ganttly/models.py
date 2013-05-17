@@ -2,17 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Project(models.Model):
-	name = models.CharField(max_length=50)
-	description = models.CharField(max_length=200)
-	date = models.DateField('date published', auto_now=True)
-	admin = models.ForeignKey(User)
+	name = models.CharField('Project Name', max_length=50)
+	description = models.CharField('Description', max_length=200)
+	date = models.DateField('Date Published', auto_now=True)
+	admin = models.ForeignKey(User,related_name="owner")
+	team = models.ManyToManyField(User,related_name="team")
 
 	def __unicode__(self):
 		return self.name
 
 class Task(models.Model):
-	name = models.CharField(max_length=50)
-	description = models.CharField(max_length=200)
+	name = models.CharField('Name',max_length=50)
+	description = models.CharField('Description',max_length=200)
 	assigned_to = models.ManyToManyField(User)
 	project = models.ForeignKey(Project)
 	start = models.DateField('start date')

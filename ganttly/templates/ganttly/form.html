@@ -1,0 +1,13 @@
+{% extends 'base_loggedin.html' %}
+
+    {% if form.errors %}
+        <p>Error</p>
+    {% endif %}
+
+{% block content %}
+<form action="../add/" method="post">
+    {% csrf_token %}
+    {% include "form_snippet.html" %}
+    <p><input type="submit" value="{{ button }}" /></p>
+</form>
+{% endblock %}
