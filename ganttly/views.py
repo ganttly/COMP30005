@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import Context, loader
 from ganttly.models import Project, Task
 from ganttly.forms import ProjectForm, TaskForm
@@ -37,7 +37,6 @@ def project(request, project_id):
 
 @login_required
 def project_list(request):
-    #project_list = Project.objects.all
     project_list = Project.objects.filter(admin=request.user)
 
     context = Context({
@@ -61,8 +60,33 @@ def project_add(request):
 
             return HttpResponseRedirect('..')
 
-    action = 'project'
+    action = 'add'
     button = 'Add Project'
+
+    context = Context({
+        'form': form,
+        'action': action,
+        'button': button,
+    })
+
+    return render(request, 'ganttly/form.html', context)
+
+@login_required
+def project_edit(request, project_id):
+
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.method == 'POST':
+        form = ProjectForm(request.POST or None, instance=project)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('..')
+
+    form = ProjectForm(instance=Project.objects.get(pk=project_id))
+
+    action = 'edit'
+    button = 'Edit Project'
 
     context = Context({
         'form': form,
@@ -75,9 +99,10 @@ def project_add(request):
 @login_required
 def task(request, project_id, task_id):
     task = Task.objects.get(id=task_id)
+    project = Project.objects.get(id=project_id)
 
     context = Context({
-        'project': 'put project here',
+        'project': project,
         'task': task,
     })
 
@@ -100,17 +125,39 @@ def task_add(request, project_id):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            
-            f = TaskForm(request.POST)
-            task = f.save(commit=False)
+            task = form.save(commit=False)
             task.project = Project.objects.get(pk=project_id)
             task.save()
-            f.save_m2m()
+            form.save_m2m()
 
             return HttpResponseRedirect('..')
 
-    action = 'task'
+    action = 'add'
     button = 'Add Task'
+
+    context = Context({
+        'form': form,
+        'action': action,
+        'button': button,
+    })
+
+    return render(request, 'ganttly/form.html', context)
+
+@login_required
+def task_edit(request, project_id, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST or None, instance=task)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('..')
+
+    form = TaskForm(instance=Task.objects.get(pk=task_id))
+
+    action = 'edit'
+    button = 'Edit Task'
 
     context = Context({
         'form': form,

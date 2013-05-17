@@ -1,6 +1,7 @@
-{% for field in form %}
-    <div class="fieldWrapper">
-        {{ field.errors }}
-        {{ field.label_tag }}: {{ field }}
-    </div>
-{% endfor %}
+<div class="form">
+    {% for field in form %}
+    <b>{{ field.label_tag }}</b><div class="errors">{{ field.errors }}</div>
+    {{ field }}
+    <br/><br/>
+    {% endfor %}
+</div>

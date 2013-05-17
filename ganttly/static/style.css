@@ -245,3 +245,13 @@ li {
 	border-right: 1px solid #ccc;
 	padding: 0px 5px 0px 5px;
 }
+
+.errors {
+	clear:left;
+}
+
+.errorlist li {
+	color: #A62424;
+	text-shadow: 0px 1px 0px #FFcccc;
+	font-size: 12px;
+}

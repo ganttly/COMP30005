@@ -5,7 +5,7 @@
     {% endif %}
 
 {% block content %}
-<form action="../add/" method="post">
+<form action="../{{ action }}/" method="post">
     {% csrf_token %}
     {% include "form_snippet.html" %}
     <p><input type="submit" value="{{ button }}" /></p>
