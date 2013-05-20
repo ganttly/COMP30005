@@ -27,12 +27,18 @@ class Task(models.Model):
 class Comment(models.Model):
 	comment = models.CharField(max_length=200)
 	user = models.ForeignKey(User)
-	posted = models.DateTimeField()
-	parent = models.ForeignKey('self',related_name='comment parent')
+	posted = models.DateTimeField(auto_now_add=True,blank=True)
+	parent = models.ForeignKey('self',related_name='comment parent',null=True,blank=True,default=None)
+	task = models.ForeignKey(Task)
 
-class file(models.Model):
+	def __unicode__(self):
+		return self.comment
+
+class File(models.Model):
 	name = models.CharField(max_length=50)
 	location = models.CharField(max_length=200)
 	task = models.ForeignKey(Task)
 	added = models.DateTimeField('added date')
 
+	def __unicode__(self):
+		return self.name

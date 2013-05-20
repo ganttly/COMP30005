@@ -4,12 +4,13 @@
 <h1>{{project.name}}</h1>
 <p>{{project.description}}</p>
 <br/>
+{% if user == project.admin %}
 <ul class="menu">
     <li><a href="add">Add new task</a></li>
     <li><a href="edit">Edit Project</a></li>
-    <li><a href="#">Delete Project</a></li>
+    <li><a href="delete">Delete Project</a></li>
 </ul>
-
+{% endif %}
 
 <br/>
 
@@ -69,5 +70,28 @@
 </div>
 <br/>
 </div>
+
+<dl>
+    <dt>Comments</dt>
+        <dd>
+            <form action="../{{ action }}/" method="post">
+                {% csrf_token %}
+                {% include "form_snippet.html" %}
+                <p><input type="submit" value="{{ button }}" /></p>
+            </form>
+            <br/>
+            <ul class="comments">
+                {% for comment in comments %}
+                <li>
+                    <b>{{ comment.user.first_name }} {{ comment.user.last_name }}</b><br/>
+                    <i>{{ comment.posted }}</i><br/>
+                    <p>
+                        {{ comment.comment }}
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
+        </dd>
+</dl>
 
 {% endblock content %}

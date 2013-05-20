@@ -5,6 +5,25 @@
 <p>
     {{ task.description }}
 </p>
+<ul class="menu">
+    {% if task.is_completed %}
+    <li>[Start]</li>
+    <li>[Pause]</li>
+    <li>[Finish]</li>
+    {% elif task.has_started %}
+    <li>[Start]</li>
+    <li><a href="pause">[Pause]</a></li>
+    <li><a href="finish">[Finish]</a></li>
+    {% else %}
+    <li><a href="start">[Start]</a></li>
+    <li>[Pause]</li>
+    <li>[Finish]</li>
+    {% endif %}
+    {% if user == project.admin %}
+    <li><a href="edit">[Edit Task]</a></li>
+    <li><a href="delete">[Delete Task]</a></li>
+    {% endif %}
+</ul>
 
 <a href="../"><< Back to project</a>
 <br/>
@@ -26,7 +45,7 @@
     </dd>
     <dt>Start:</dt><dd>{{ task.start }}</dd>
     <dt>Finish:</dt><dd>{{ task.finish }}</dd>
-    <dt>Started?</dt><dd>{{ task.has_started }} <a href="start">[Start]</a></dd>
+    <!-- <dt>Started?</dt><dd>{{ task.has_started }}</dd> -->
     <dt>Assigned to:</dt>
         <dd>
             <ul>
@@ -43,48 +62,22 @@
 <dl>
     <dt>Comments</dt>
         <dd>
-            <a href="#">New comment</a>
-            <br/><br/>
+            <form action="../{{ action }}/" method="post">
+                {% csrf_token %}
+                {% include "form_snippet.html" %}
+                <p><input type="submit" value="{{ button }}" /></p>
+            </form>
+            <br/>
             <ul class="comments">
+                {% for comment in comments %}
                 <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <b>{{ comment.user.first_name }} {{ comment.user.last_name }}</b><br/>
+                    <i>{{ comment.posted }}</i><br/>
                     <p>
-                        sdf
-                    </p>
-                    <ul class="comments">
-                        <li>
-                            <b>First Lastname</b><br/>
-                            <i>March 1, 2013 - 3:30px</i><br/>
-                            <p>
-                                sdf
-                            </p>
-                            <ul class="comments">
-                                <li>
-                                    <b>First Lastname</b><br/>
-                                    <i>March 1, 2013 - 3:30px</i><br/>
-                                    <p>
-                                        sdf
-                                    </p>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        sdf
+                        {{ comment.comment }}
                     </p>
                 </li>
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        sdf
-                    </p>
-                </li>
+                {% endfor %}
             </ul>
         </dd>
 </dl>

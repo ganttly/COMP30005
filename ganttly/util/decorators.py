@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from ganttly.models import Project
 
 def secure_required(view_func):
     """Decorator makes sure URL is accessed over https."""
@@ -18,5 +19,13 @@ def login_required(view_func):
             pass
         else:
             return HttpResponseRedirect('/ganttly/')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view_func
+
+def project_admin_required(view_func):
+    def _wrapped_view_func(request, *args, **kwargs):
+        project = Project.objects.get(id=kwargs['project_id'])
+        if request.user != project.admin:
+            return HttpResponseRedirect('/ganttly/projects/')
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
