@@ -6,6 +6,8 @@ from ganttly.forms import ProjectForm, TaskForm, CommentForm
 from util.decorators import secure_required, login_required, project_admin_required
 from datetime import date
 from django.contrib import auth
+from django.contrib.auth.forms import UserCreationForm
+
 
 def index(request):
     context = {'content': ''}
@@ -215,3 +217,15 @@ def task_finish(request, project_id, task_id):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/ganttly')
+    
+def register(request):
+    if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			new_user = form.save()
+			return HttpResponseRedirect("..")
+	else:
+		form = UserCreationForm()
+    		return render(request, "register.html", {
+		'form': form,
+     })
