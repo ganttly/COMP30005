@@ -1,8 +1,7 @@
 from django.contrib import admin
-from ganttly.models import Project
-from ganttly.models import Task
-from ganttly.models import Comment
+from ganttly.models import Project, Task, ProjectComment, TaskComment
 
 admin.site.register(Project)
 admin.site.register(Task)
-admin.site.register(Comment)
+admin.site.register(ProjectComment)
+admin.site.register(TaskComment)

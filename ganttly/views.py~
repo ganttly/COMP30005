@@ -142,7 +142,7 @@ def task(request, project_id, task_id):
         comments[i].path = ([int(num) for num in comments[i].path.split(',')])
     
     #Order the list of comments by their paths
-    comments.sort(key=lambda x: x.path)
+    comments[i].sort(key=lambda x: x.path)
     
     context = Context({
         'form':form,

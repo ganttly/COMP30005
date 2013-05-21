@@ -252,8 +252,8 @@ li {
 	overflow:hidden;
 }
 
-.midcolumn dd {
-    clear:left;
+.midcolumn dt {
+    clear:right;
 }
 
 .rightcolumn {
