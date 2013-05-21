@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.template import Context, loader
 from ganttly.models import Project, Task, TaskComment
 from ganttly.forms import ProjectForm, TaskForm, UserCreateForm, TaskCommentForm
-from util.decorators import secure_required, login_required
+from util.decorators import secure_required, login_required, project_admin_required
 from datetime import date
 from django.contrib import auth
 
@@ -38,7 +38,8 @@ def project(request, project_id):
 
 @login_required
 def project_list(request):
-    project_list = Project.objects.filter(admin=request.user)
+    #project_list = Project.objects.filter(admin=request.user)
+    project_list = Project.objects.filter(team=request.user)
 
     context = Context({
         'project_list': project_list,
@@ -53,9 +54,7 @@ def project_add(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            
-            f = ProjectForm(request.POST)
-            project = f.save(commit=False)
+            project = form.save(commit=False)
             project.admin = request.user
             project.save()
 
@@ -73,6 +72,7 @@ def project_add(request):
     return render(request, 'ganttly/form.html', context)
 
 @login_required
+@project_admin_required
 def project_edit(request, project_id):
 
     project = get_object_or_404(Project, id=project_id)
@@ -80,7 +80,8 @@ def project_edit(request, project_id):
     if request.method == 'POST':
         form = ProjectForm(request.POST or None, instance=project)
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.save()
 
             return HttpResponseRedirect('..')
 
@@ -96,6 +97,11 @@ def project_edit(request, project_id):
     })
 
     return render(request, 'ganttly/form.html', context)
+
+@login_required
+@project_admin_required
+def project_delete(request, project_id):
+    return HttpResponseRedirect('../..')
 
 @login_required
 def task(request, project_id, task_id):
@@ -164,6 +170,7 @@ def task_list(request, project_id):
     return render(request, 'ganttly/tasks.html', context)
 
 @login_required
+@project_admin_required
 def task_add(request, project_id):
     form = TaskForm()
 
@@ -189,6 +196,7 @@ def task_add(request, project_id):
     return render(request, 'ganttly/form.html', context)
 
 @login_required
+@project_admin_required
 def task_edit(request, project_id, task_id):
     task = get_object_or_404(Task, id=task_id)
 
@@ -215,7 +223,25 @@ def task_edit(request, project_id, task_id):
 @login_required
 def task_start(request, project_id, task_id):
     task = Task.objects.get(pk=task_id)
-    task.has_started = True
+    if task.has_started:
+        task.has_started = False
+    else:
+        task.has_started = True
+    task.save()
+
+    return HttpResponseRedirect('..')
+
+@login_required
+@project_admin_required
+def task_delete(request, project_id, task_id):
+    return HttpResponseRedirect('../..')
+
+@login_required
+def task_finish(request, project_id, task_id):
+    task = Task.objects.get(pk=task_id)
+    if task.has_started:
+        task.is_completed = True
+    
     task.save()
 
     return HttpResponseRedirect('..')

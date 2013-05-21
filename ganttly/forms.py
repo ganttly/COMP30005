@@ -23,7 +23,7 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ['name','description','assigned_to','start','finish']
-    
+
 class TaskCommentForm(ModelForm):
     # Hidden value for the parent
     parent = CharField(widget=HiddenInput(attrs={'class':'parent'}), required=False)
