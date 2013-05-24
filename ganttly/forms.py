@@ -27,8 +27,17 @@ class TaskForm(ModelForm):
 class TaskCommentForm(ModelForm):
     # Hidden value for the parent
     parent = CharField(widget=HiddenInput(attrs={'class':'parent'}), required=False)
-    comment = CharField(widget=Textarea(attrs={'cols': 10, 'rows': 5}), label="Your comment:")
+    comment = CharField(widget=Textarea(attrs={'cols': 20, 'rows': 5}), label="Your comment:")
     
     class Meta:
         model = TaskComment
+        fields = ['comment']
+        
+class ProjectCommentForm(ModelForm):
+    # Hidden value for the parent
+    parent = CharField(widget=HiddenInput(attrs={'class':'parent'}), required=False)
+    comment = CharField(widget=Textarea(attrs={'cols': 20, 'rows': 5}), label="Your comment:")
+    
+    class Meta:
+        model = ProjectComment
         fields = ['comment']

@@ -1,7 +1,0 @@
-from django.contrib import admin
-from ganttly.models import Project, Task, Project_Comment, Task_Comment
-
-admin.site.register(Project)
-admin.site.register(Task)
-admin.site.register(Project_Comment)
-admin.site.register(Task_Comment)

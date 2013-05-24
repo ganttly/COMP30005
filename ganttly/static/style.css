@@ -236,11 +236,22 @@ li {
 	list-style: none;
 }
 
+.projectcomments {
+    margin-left: 2em;
+    width: 100%;
+	float: left;
+	clear: left;
+	position: relative;
+	padding: 0 0 1em 0;
+	margin-top: 2em;
+	overflow: hidden;
+}
+
 .leftcolumn {
+    float: left;
     min-width: 200px;
     width: 25%;
-	float: left;
-	position: relative;
+	position:relative;
 	padding: 0 0 1em 0;
 	overflow: hidden;
 }
