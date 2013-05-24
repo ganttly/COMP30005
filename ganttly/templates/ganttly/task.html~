@@ -3,6 +3,10 @@
 <script>
     // Function to move the comment box when clicking reply
     $(document).ready(function() {
+    	// Display the reply button for javascript enabled users
+    	$(".reply").css("display", "block");
+    
+    	// Function that creates another post comment box when replying
         $("#comments").on("click", ".reply", function(event){
             event.preventDefault();
             var form = $("#postcomment").clone(true);
@@ -16,11 +20,31 @@
 {% extends 'base_loggedin.html' %}
 {% block content %}
 
+
 <!-- Task general information -->
 <h1>{{ task.name }}</h1>
 <p>
     {{ task.description }}
 </p>
+<ul class="menu">
+    {% if task.is_completed %}
+    <li>[Start]</li>
+    <li>[Pause]</li>
+    <li>[Finish]</li>
+    {% elif task.has_started %}
+    <li>[Start]</li>
+    <li><a href="pause">[Pause]</a></li>
+    <li><a href="finish">[Finish]</a></li>
+    {% else %}
+    <li><a href="start">[Start]</a></li>
+    <li>[Pause]</li>
+    <li>[Finish]</li>
+    {% endif %}
+    {% if user == project.admin %}
+    <li><a href="edit">[Edit Task]</a></li>
+    <li><a href="delete">[Delete Task]</a></li>
+    {% endif %}
+</ul>
 
 <a href="../"><< Back to project</a>
 <br/>
@@ -42,7 +66,7 @@
     </dd>
     <dt>Start:</dt><dd>{{ task.start }}</dd>
     <dt>Finish:</dt><dd>{{ task.finish }}</dd>
-    <dt>Started?</dt><dd>{{ task.has_started }} <a href="start">[Start]</a></dd>
+    <!-- <dt>Started?</dt><dd>{{ task.has_started }}</dd> -->
     <dt>Assigned to:</dt>
     <!-- shows list of users assigned to the task -->
         <dd>
@@ -80,8 +104,7 @@
             {% empty %}
                 <li>No comments...</li>
             {% endfor %}
-            </ul>
-         
+            </ul>     
         </dd>
 </dl>
 </div>

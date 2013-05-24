@@ -61,18 +61,20 @@ a {
 
 #header h1 {
 	font-family: tahoma;
-	line-height: 100px;
-	font-size: 6rem;
+	line-height: 83px;
+	margin-left: 10px;
+	font-size: 4rem;
 	font-weight: bold;
 	color: white;
-	text-shadow:  0px -5px 1px #458C6B,
+	text-shadow: none;
+	/*text-shadow:  0px -5px 1px #458C6B,
 	              0px  5px 1px #458C6B,
 	              5px  0px 1px #458C6B,
 	             -5px  0px 1px #458C6B,
 	              5px -5px 3px #458C6B,
 	             -5px -5px 3px #458C6B,
 	             -5px  5px 3px #458C6B,
-	              5px  5px 3px #458C6B;
+	              5px  5px 3px #458C6B;*/
     float: left;
 }
 
@@ -252,8 +254,8 @@ li {
 	overflow:hidden;
 }
 
-.midcolumn dt {
-    clear:right;
+.midcolumn dd {
+    clear:left;
 }
 
 .rightcolumn {

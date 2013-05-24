@@ -291,11 +291,16 @@ li {
     height:30px;
     width:100px;
     margin-bottom: 20px;
+}
 
 .menu li {
 	display: inline;
 	border-right: 1px solid #ccc;
 	padding: 0px 5px 0px 5px;
+}
+
+.reply {
+	display:none;
 }
 
 .errors {

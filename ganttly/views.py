@@ -38,8 +38,8 @@ def project(request, project_id):
 
 @login_required
 def project_list(request):
-    #project_list = Project.objects.filter(admin=request.user)
-    project_list = Project.objects.filter(team=request.user)
+    project_list = Project.objects.filter(admin=request.user)
+    #project_list = Project.objects.filter(team=request.user)
 
     context = Context({
         'project_list': project_list,
@@ -141,14 +141,14 @@ def task(request, project_id, task_id):
     project = get_object_or_404(Project, id = project_id)
 
     #Retrieve all comments for the task
-    comments = get_list_or_404(TaskComment, task=task_id)
+    comments = TaskComment.objects.filter(task=task_id)
     
     #Transform the comment's list of string paths to a list of integers
     for i in range(len(comments)):
         comments[i].path = ([int(num) for num in comments[i].path.split(',')])
     
     #Order the list of comments by their paths
-    comments.sort(key=lambda x: x.path)
+    comments = sorted(comments, key=lambda x: x.path)
     
     context = Context({
         'form':form,

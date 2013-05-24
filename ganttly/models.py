@@ -1,3 +1,6 @@
+from django.db import models
+from django.contrib.auth.models import User
+
 class Project(models.Model):
 	admin = models.ForeignKey(User,related_name="owner")
 	name = models.CharField('Project Name', max_length=50)
