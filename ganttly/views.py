@@ -13,7 +13,7 @@ def index(request):
     context = {'content': ''}
     return render(request, 'ganttly/index.html', context)
 
-@login_required
+@login_required     
 def project(request, project_id):
     project = Project.objects.get(id=project_id)
     task_list = Task.objects.filter(project=project_id).order_by('start')
@@ -220,12 +220,20 @@ def logout(request):
     
 def register(request):
     if request.method == 'POST':
-		form = UserCreationForm(request.POST)
-		if form.is_valid():
-			new_user = form.save()
-			return HttpResponseRedirect("..")
-	else:
-		form = UserCreationForm()
-    		return render(request, "register.html", {
-		'form': form,
-     })
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return HttpResponseRedirect("../projects")
+    else:
+        form = UserCreationForm()
+
+    action = 'register'
+    button = 'Register'
+
+    context = Context({
+        'form': form,
+        'action': action,
+        'button': button,
+    })
+
+    return render(request, 'ganttly/form.html', context)

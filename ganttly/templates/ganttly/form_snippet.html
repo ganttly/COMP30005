@@ -2,6 +2,10 @@
     {% for field in form %}
     <b>{{ field.label_tag }}</b><div class="errors">{{ field.errors }}</div>
     {{ field }}
+    {% if field.help_text and field.help_text.strip %}
+    <br/>
+    {{ field.help_text }}
+    {% endif %}
     <br/><br/>
     {% endfor %}
 </div>

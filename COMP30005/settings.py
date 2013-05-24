@@ -119,7 +119,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     'ganttly/templates/ganttly',
-    'polliebyte/templates/polliebyte'
+    #'polliebyte/templates/polliebyte'
 )
 
 INSTALLED_APPS = (
@@ -134,7 +134,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'ganttly',
-    'polliebyte',
+    #'polliebyte',
 )
 
 # A sample logging configuration. The only tangible logging
