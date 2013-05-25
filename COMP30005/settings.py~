@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/renan/Dropbox/Codes/Django/COMP30005/COMP30005/COMP30005.db',
+        'NAME': 'C:/Users/Brendan/BitNami DjangoStack projects/COMP30005/COMP30005/COMP30005.db',
     }
 }
 

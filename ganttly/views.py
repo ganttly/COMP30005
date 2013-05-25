@@ -1,12 +1,16 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.template import Context, loader
+<<<<<<< HEAD
 from ganttly.models import Project, Task, Comment
 from ganttly.forms import ProjectForm, TaskForm, CommentForm, FileForm
+=======
+from ganttly.models import Project, Task, ProjectComment, TaskComment
+from ganttly.forms import ProjectForm, TaskForm, UserCreateForm, ProjectCommentForm, TaskCommentForm
+>>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
 from util.decorators import secure_required, login_required, project_admin_required
 from datetime import date
 from django.contrib import auth
-from django.contrib.auth.forms import UserCreationForm
 
 
 def index(request):
@@ -15,8 +19,49 @@ def index(request):
 
 @login_required     
 def project(request, project_id):
+
+     #Get form case a new comment was posted
+    form = ProjectCommentForm(request.POST or None)
+    
+    if request.method == "POST":
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.project = get_object_or_404(Project, id=project_id)
+            new_comment.user = request.user
+            parent_id = form['parent'].value()
+            
+            if parent_id == '':
+                #Set a blank path then save it to get an ID
+                new_comment.path = ''
+                new_comment.save()
+                new_comment.path = str(new_comment.id)
+            else:
+                #Get the parent node
+                parent = get_object_or_404(ProjectComment, id=parent_id)
+                new_comment.depth = parent.depth + 1
+                new_comment.path = str(parent.path)
+                
+                #Store parents path then apply comment ID
+                new_comment.save()
+                new_comment.path += ',' + str(new_comment.id)
+                
+            #Final save for parents and children
+            new_comment.save()
+            return HttpResponseRedirect('.')
+
+    # Get the project and tasks objects
     project = Project.objects.get(id=project_id)
     task_list = Task.objects.filter(project=project_id).order_by('start')
+
+    #Retrieve all comments for the project
+    comments = ProjectComment.objects.filter(project=project_id)
+    
+    #Transform the comment's list of string paths to a list of integers
+    for i in range(len(comments)):
+        comments[i].path = ([int(num) for num in comments[i].path.split(',')])
+    
+    #Order the list of comments by their paths
+    comments = sorted(comments, key=lambda x: x.path)
 
     total_days = 0
     first_date = 0
@@ -30,6 +75,8 @@ def project(request, project_id):
     context = Context({
         'project': project,
         'task_list': task_list,
+        'form': form,
+        'comments': comments,
         'first_date': first_date,
         'last_date': last_date,
         'total_days': total_days,
@@ -39,8 +86,8 @@ def project(request, project_id):
 
 @login_required
 def project_list(request):
-    #project_list = Project.objects.filter(admin=request.user)
-    project_list = Project.objects.filter(team=request.user)
+    project_list = Project.objects.filter(admin=request.user)
+    #project_list = Project.objects.filter(team=request.user)
 
     context = Context({
         'project_list': project_list,
@@ -102,10 +149,23 @@ def project_edit(request, project_id):
 @login_required
 @project_admin_required
 def project_delete(request, project_id):
+    #Get project object
+    project = get_object_or_404(Project, id=project_id)
+
+    #Delete all tasks within the project
+    tasks = Task.objects.filter(project=project)
+    for t in tasks:
+        delete_task(t.id)
+    
+    #Delete comments and the project itself
+    ProjectComment.objects.filter(project=project).delete();
+    project.delete()
+    
     return HttpResponseRedirect('../..')
 
 @login_required
 def task(request, project_id, task_id):
+<<<<<<< HEAD
     comment_form = CommentForm()
     file_form = FileForm()
 
@@ -139,16 +199,78 @@ def task(request, project_id, task_id):
     forms = [comment_form, file_form]
     buttons = ['Add Comment', 'Add File']
 
+=======
+    
+    #Get form case a new comment was posted
+    form = TaskCommentForm(request.POST or None)
+    
+    if request.method == "POST":
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.task = get_object_or_404(Task, id=task_id)
+            new_comment.user = request.user
+            parent_id = form['parent'].value()
+            
+            if parent_id == '':
+                #Set a blank path then save it to get an ID
+                new_comment.path = ''
+                new_comment.save()
+                new_comment.path = str(new_comment.id)
+            else:
+                #Get the parent node
+                parent = get_object_or_404(TaskComment, id=parent_id)
+                new_comment.depth = parent.depth + 1
+                new_comment.path = str(parent.path)
+                
+                #Store parents path then apply comment ID
+                new_comment.save()
+                new_comment.path += ',' + str(new_comment.id)
+                
+            #Final save for parents and children
+            new_comment.save()
+            return HttpResponseRedirect('.')
+
+
+    #Get task and project objects
+    task = get_object_or_404(Task, id = task_id)
+    project = get_object_or_404(Project, id = project_id)
+
+    #Retrieve all comments for the task
+    comments = TaskComment.objects.filter(task=task_id)
+    
+    #Transform the comment's list of string paths to a list of integers
+    for i in range(len(comments)):
+        comments[i].path = ([int(num) for num in comments[i].path.split(',')])
+    
+    #Order the list of comments by their paths
+    comments = sorted(comments, key=lambda x: x.path)
+    
+>>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
     context = Context({
+        'form':form,
         'project': project,
         'task': task,
+<<<<<<< HEAD
         'comments': comments,
         'forms': forms,
         'action': action,
         'buttons': buttons,
+=======
+        'comments':comments,
+>>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
     })
 
     return render(request, 'ganttly/task.html', context)
+
+@login_required
+def task_list(request, project_id):
+    task_list = Task.objects.all
+
+    context = Context({
+        'task_list': task_list,
+    })
+
+    return render(request, 'ganttly/tasks.html', context)
 
 @login_required
 @project_admin_required
@@ -215,7 +337,22 @@ def task_start(request, project_id, task_id):
 @login_required
 @project_admin_required
 def task_delete(request, project_id, task_id):
+    
+    #Call function that delete all task related entries
+    delete_task(task_id)
+    
     return HttpResponseRedirect('../..')
+    
+def delete_task(task_id):
+    task = get_object_or_404(Task, id=task_id)
+    
+    #Delete comments on task
+    TaskComment.objects.filter(task=task).delete();
+    
+    #Delete task itself
+    task.delete()
+    
+    #Delete uploaded documents
 
 @login_required
 def task_finish(request, project_id, task_id):
@@ -233,6 +370,7 @@ def logout(request):
     
 def register(request):
     if request.method == 'POST':
+<<<<<<< HEAD
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
@@ -250,3 +388,14 @@ def register(request):
     })
 
     return render(request, 'ganttly/form.html', context)
+=======
+        form = UserCreateForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return HttpResponseRedirect("..")
+    else:
+        form = UserCreateForm()
+        return render(request, "register.html", {
+        'form': form,
+        })
+>>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed

@@ -20,6 +20,7 @@ incosequential change
 }
 
 body {
+    min-width:1024px;
 	width: 100%;
 }
 
@@ -228,9 +229,9 @@ a:hover {
 }
 
 dt {
-	clear: left;
+    position:relative;
+    clear:left;
 	float: left;
-	width: 100px;
 	margin-right: 15px;
 	text-align: right;
 	font-weight: bold;
@@ -238,25 +239,90 @@ dt {
 
 dd {
 	float: left;
-
+	padding-left: 0px;
+    margin-left: 0px;
 }
 
 li {
 	list-style: none;
 }
 
-.comments li, .files li {
-	margin-bottom: 15px;
+.projectcomments {
+    margin-left: 2em;
+    width: 100%;
+	float: left;
+	clear: left;
+	position: relative;
+	padding: 0 0 1em 0;
+	margin-top: 2em;
+	overflow: hidden;
 }
 
-.comments .comments {
-	margin: 15px 0px 0px 25px;
+.leftcolumn {
+    float: left;
+    min-width: 200px;
+    width: 25%;
+	position:relative;
+	padding: 0 0 1em 0;
+	overflow: hidden;
+}
+
+.midcolumn {
+	width:40%;
+    min-width:400px;
+    float:left;
+	position:relative;
+	padding:0 0 1em 0;
+	overflow:hidden;
+}
+
+.midcolumn dd {
+    clear:left;
+}
+
+.rightcolumn {
+    width:30%;
+    float:right;
+	position:relative;
+	padding:0 0 1em 0;
+	overflow:hidden;
+}
+
+#postcomment ul li {
+    margin-left: 0px;
+    padding-left: 0px;
+    list-style-type: none;
+    padding-bottom: 10px;
+}
+
+#postcomment label {
+    width: 100%;
+    display: inline-block;
+    margin-bottom:5px;
+}
+
+#postcomment textarea {
+    min-width:400px;
+    resize:none;
+    border:2px solid #888;
+    background-color:#FFFAFA;
+    margin-bottom:12px;
+}
+
+#postcomment input {
+    height:30px;
+    width:100px;
+    margin-bottom: 20px;
 }
 
 .menu li {
 	display: inline;
 	border-right: 1px solid #ccc;
 	padding: 0px 5px 0px 5px;
+}
+
+.reply {
+	display:none;
 }
 
 .errors {

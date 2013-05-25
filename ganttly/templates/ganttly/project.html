@@ -1,9 +1,32 @@
-{% extends 'base_loggedin.html' %}
+<!-- JQuery script -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+
+    	// Display the reply button for javascript enabled users
+    	$(".reply").css("display", "block");
+    
+    	// Function that creates another post comment box when replying
+        $("#comments").on("click", ".reply", function(event){
+            event.preventDefault();
+            var form = $("#postcomment").clone(true);
+            form.find('.parent').val($(this).parent().parent().attr('id'));
+            $(this).parent().append(form);
+        });
+        
+    });
+</script>
+
+{% extends 'base_loggedin.html' %}
 {% block content %}
+
+<!-- Project details -->
 <h1>{{project.name}}</h1>
 <p>{{project.description}}</p>
 <br/>
+
+<!-- Editing project menu for project administrators -->
 {% if user == project.admin %}
 <ul class="menu">
     <li><a href="add">Add new task</a></li>
@@ -14,11 +37,14 @@
 
 <br/>
 
+<<<<<<< HEAD
 
 
 <div style="clear: both;"></div>
+=======
+<!-- Drawing the gantt chart for the tasks -->
+>>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
 {% load ganttly_extras %}
-
 <style>
     .clear {width:{{ first_date|countdays:last_date|add:2|multiply:40 }}px;}
 </style>
@@ -103,27 +129,30 @@
 
 <br/>
 
-<dl>
-    <dt>Comments</dt>
-        <dd>
-            <form action="../{{ action }}/" method="post">
-                {% csrf_token %}
-                {% include "form_snippet.html" %}
-                <p><input type="submit" value="{{ button }}" /></p>
-            </form>
-            <br/>
-            <ul class="comments">
-                {% for comment in comments %}
-                <li>
-                    <b>{{ comment.user.first_name }} {{ comment.user.last_name }}</b><br/>
-                    <i>{{ comment.posted }}</i><br/>
-                    <p>
-                        {{ comment.comment }}
-                    </p>
-                </li>
-                {% endfor %}
-            </ul>
-        </dd>
-</dl>
+<!-- Project comments -->
+<div class="projectcomments">
+    <strong>Comments</strong>
+
+    <!-- form for a new comment submit -->
+    <form id="postcomment" method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+
+    <!-- comments tree -->
+    <ul id="comments">
+    {% for c in comments %}
+        <li id="{{ c.id }}" style="margin-left:{{ c.depth|add:c.depth }}em;">
+            <b>{{ c.user }}</b><br/>
+            <i>{{ c.posted }}</i><br/>
+            <p>{{ c.comment }}</p>
+            <p><a href="" class="reply">Reply</a></p>
+        </li>
+    {% empty %}
+        <li>No comments...</li>
+    {% endfor %}
+    </ul>
+</div>
 
 {% endblock content %}

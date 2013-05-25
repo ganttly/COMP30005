@@ -1,10 +1,33 @@
-{% extends 'base_loggedin.html' %}
+<!-- JQuery script -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>
+    // Function to move the comment box when clicking reply
+    $(document).ready(function() {
+    	// Display the reply button for javascript enabled users
+    	$(".reply").css("display", "block");
+    
+    	// Function that creates another post comment box when replying
+        $("#comments").on("click", ".reply", function(event){
+            event.preventDefault();
+            var form = $("#postcomment").clone(true);
+            form.find('.parent').val($(this).parent().parent().attr('id'));
+            $(this).parent().append(form);
+        });
+    });
+</script>
 
+
+{% extends 'base_loggedin.html' %}
 {% block content %}
+
+
+<!-- Task general information -->
 <h1>{{ task.name }}</h1>
 <p>
     {{ task.description }}
 </p>
+
+<!-- Menu for task management options -->
 <ul class="menu">
     {% if task.is_completed %}
     <li>[Start]</li>
@@ -25,12 +48,13 @@
     {% endif %}
 </ul>
 
+<!-- Back button -->
 <a href="../"><< Back to project</a>
 <br/>
 <br/>
 
-<div style="float: left;">
-<dl>
+<!-- Task detailed information -->
+<dl class="leftcolumn">
     <dt>Status:</dt>
     <dd>{% load ganttly_extras %}
         {% if task.is_completed %}
@@ -47,6 +71,7 @@
     <dt>Finish:</dt><dd>{{ task.finish }}</dd>
     <!-- <dt>Started?</dt><dd>{{ task.has_started }}</dd> -->
     <dt>Assigned to:</dt>
+    <!-- shows list of users assigned to the task -->
         <dd>
             <ul>
                 {% for user in task.assigned_to.all %}
@@ -57,6 +82,7 @@
             </ul>
         </dd>
 </dl>
+<<<<<<< HEAD
 </div>
 <div style="float: left; padding-left: 30px; width: 180px;">
     <form action="../{{ action }}/" method="post">
@@ -100,5 +126,87 @@
             <a href="#">Download</a>
         </li>
     </ul>
+=======
+
+<!-- Columns where the comments take place -->
+<dl class="midcolumn">
+    <dt>Comments</dt>
+        <dd>
+            <!-- form for a new comment submit -->
+            <br />
+            <form id="postcomment" method="post" action="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit" />
+            </form>
+            
+            <!-- comments tree -->
+            <ul id="comments">
+            {% for c in comments %}
+                <li id="{{ c.id }}" style="margin-left:{{ c.depth|add:c.depth }}em;">
+                    <b>{{ c.user }}</b><br/>
+                    <i>{{ c.posted }}</i><br/>
+                    <p>{{ c.comment }}</p>
+                    <p><a href="" class="reply">Reply</a></p>
+                </li>
+            {% empty %}
+                <li>No comments...</li>
+            {% endfor %}
+            </ul>     
+        </dd>
+</dl>
+</div>
+
+<!-- File upload column -->
+<div class="rightcolumn">
+    <dt>Files</dt>
+        <dd>
+            <a href="#">Upload file</a>
+            <br/><br/>
+            <ul class="files">
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+                <li>
+                    <b>First Lastname</b><br/>
+                    <i>March 1, 2013 - 3:30px</i><br/>
+                    <p>
+                        This is a file
+                    </p>
+                    <a href="#">Download</a>
+                </li>
+            </ul>
+        </dd>
+
+>>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
 </div>
 {% endblock content %}
