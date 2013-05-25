@@ -39,6 +39,30 @@ def drawdays(start, finish):
 
     return blocks
 
+@register.filter(name="drawmonths")
+def drawmonths(start, finish):
+    blocks = []
+
+    if hasattr(start, 'day'):
+        first = datetime(start.year, start.month, start.day, 0, 0, 0)
+        diff = (finish - start)
+        num_days = 0
+
+        blocks.append(first.strftime('%B'))
+
+        if hasattr(diff, 'days'):
+            num_days = (finish - start).days
+
+        for x in range(0,num_days+1):
+            if first.day == 1:
+                blocks.append(first.strftime('%B'))
+            else:
+                blocks.append("")
+
+            first += timedelta(days=1)
+
+    return blocks
+
 @register.filter(name="is_overdue")
 def is_overdue(check_date):
 

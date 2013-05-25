@@ -58,78 +58,47 @@
         </dd>
 </dl>
 </div>
-<div style="float: left; padding-left: 50px;">
-<dl>
-    <dt>Comments</dt>
-        <dd>
-            <form action="../{{ action }}/" method="post">
-                {% csrf_token %}
-                {% include "form_snippet.html" %}
-                <p><input type="submit" value="{{ button }}" /></p>
-            </form>
-            <br/>
-            <ul class="comments">
-                {% for comment in comments %}
-                <li>
-                    <b>{{ comment.user.first_name }} {{ comment.user.last_name }}</b><br/>
-                    <i>{{ comment.posted }}</i><br/>
-                    <p>
-                        {{ comment.comment }}
-                    </p>
-                </li>
-                {% endfor %}
-            </ul>
-        </dd>
-</dl>
+<div style="float: left; padding-left: 30px; width: 180px;">
+    <form action="../{{ action }}/" method="post">
+        {% with form=forms.0 button=buttons.0 %}
+        {% csrf_token %}
+        {% include "form_snippet.html" %}
+        <p><input type="submit" value="{{ button }}" /></p>
+        {% endwith %}
+    </form>
 </div>
-<div style="float: left; padding-left: 50px;">
-    <dt>Files</dt>
-        <dd>
-            <a href="#">Upload file</a>
-            <br/><br/>
-            <ul class="files">
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        This is a file
-                    </p>
-                    <a href="#">Download</a>
-                </li>
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        This is a file
-                    </p>
-                    <a href="#">Download</a>
-                </li>
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        This is a file
-                    </p>
-                    <a href="#">Download</a>
-                </li>
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        This is a file
-                    </p>
-                    <a href="#">Download</a>
-                </li>
-                <li>
-                    <b>First Lastname</b><br/>
-                    <i>March 1, 2013 - 3:30px</i><br/>
-                    <p>
-                        This is a file
-                    </p>
-                    <a href="#">Download</a>
-                </li>
-            </ul>
-        </dd>
-
+<div style="float: left; padding-left: 30px; width: 180px;">
+    <ul class="comments">
+        {% for comment in comments %}
+        <li>
+            <b>{{ comment.user.first_name }} {{ comment.user.last_name }}</b><br/>
+            <i>{{ comment.posted }}</i><br/>
+            <p>
+                {{ comment.comment }}
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<div style="float: left; padding-left: 50px; width: 180px;">
+     <form action="../{{ action }}/" method="post">
+        {% with form=forms.1 button=buttons.1 %}
+        {% csrf_token %}
+        {% include "form_snippet.html" %}
+        <p><input type="submit" value="{{ button }}" /></p>
+        {% endwith %}
+    </form>
+</div>
+<div style="float: left; padding-left: 30px; width: 180px;">
+    <ul class="files">
+        <li>
+            <b>First Lastname</b><br/>
+            <i>March 1, 2013 - 3:30px</i><br/>
+            <p>
+                This is a file
+            </p>
+            <a href="#">Download</a>
+        </li>
+    </ul>
 </div>
 {% endblock content %}

@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.template import Context, loader
 from ganttly.models import Project, Task, Comment
-from ganttly.forms import ProjectForm, TaskForm, CommentForm
+from ganttly.forms import ProjectForm, TaskForm, CommentForm, FileForm
 from util.decorators import secure_required, login_required, project_admin_required
 from datetime import date
 from django.contrib import auth
@@ -106,33 +106,46 @@ def project_delete(request, project_id):
 
 @login_required
 def task(request, project_id, task_id):
-    form = CommentForm()
+    comment_form = CommentForm()
+    file_form = FileForm()
 
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
             comment.user = request.user
             comment.task = Task.objects.get(id=task_id)
             comment.posted
             comment.save()
 
-            form = CommentForm()
+            comment_form = CommentForm()
+
+        file_form = FileForm(request.POST)
+        if file_form.is_valid():
+            file = file_form.save(commit=False)
+            file.user = request.user
+            file.task = Task.objects.get(id=task_id)
+            file.posted
+            file.save()
+
+            file_form = FileForm()
 
     action = task_id
-    button = 'Add Comment'
 
     task = Task.objects.get(id=task_id)
     project = Project.objects.get(id=project_id)
     comments = Comment.objects.filter(task_id=task_id)
 
+    forms = [comment_form, file_form]
+    buttons = ['Add Comment', 'Add File']
+
     context = Context({
         'project': project,
         'task': task,
         'comments': comments,
-        'form': form,
+        'forms': forms,
         'action': action,
-        'button': button,
+        'buttons': buttons,
     })
 
     return render(request, 'ganttly/task.html', context)

@@ -150,7 +150,7 @@ a:hover {
 	box-shadow: 0px 0px 0px 2px #404040;
 }
 
-.marker{
+.marker, .month_marker{
 	float: left; 
 	width: 39px; 
 	height: 20px; 
@@ -158,6 +158,17 @@ a:hover {
 	/*border-right: 1px solid #eee;*/
 	text-align: center;
 	color: #ccc;
+}
+
+.month_marker {
+	border-left: none;
+	width: 40px;
+	background: white;
+}
+
+.month {
+	width: 39px; 
+	border-left: 1px solid #eee;
 }
 
 .clear, .clear_left {
@@ -177,7 +188,7 @@ a:hover {
 
 .gantt {
 	overflow-x: scroll;
-	width: 800px;
+	width: 930px;
 	float: left;
 }
 

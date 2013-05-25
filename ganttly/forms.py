@@ -1,6 +1,6 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from ganttly.models import Project, Task, Comment
-from django.forms.fields import DateField, CharField
+from django.forms.fields import DateField, CharField, FileField
 from django.forms.extras.widgets import SelectDateWidget
 
 class ProjectForm(ModelForm):
@@ -19,3 +19,7 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ['comment']
+
+class FileForm(Form):
+    file  = FileField()
+    description = CharField(max_length=140)
