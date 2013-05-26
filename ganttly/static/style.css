@@ -259,12 +259,14 @@ li {
 }
 
 .leftcolumn {
+    clear: both;
     float: left;
     min-width: 200px;
-    width: 25%;
+    /*width: 45%;*/
 	position:relative;
 	padding: 0 0 1em 0;
 	overflow: hidden;
+    border-right: 1px solid #cccccc;
 }
 
 .midcolumn {
@@ -281,8 +283,9 @@ li {
 }
 
 .rightcolumn {
-    width:30%;
-    float:right;
+    margin-left: 25px;
+    /*width:40%;*/
+    float:left;
 	position:relative;
 	padding:0 0 1em 0;
 	overflow:hidden;
@@ -302,14 +305,15 @@ li {
 }
 
 #postcomment textarea {
-    min-width:400px;
+    min-width:250px;
     resize:none;
     border:2px solid #888;
     background-color:#FFFAFA;
     margin-bottom:12px;
 }
 
-#postcomment input {
+/*#postcomment input {*/
+.submit {
     height:30px;
     width:100px;
     margin-bottom: 20px;
@@ -333,4 +337,12 @@ li {
 	color: #A62424;
 	text-shadow: 0px 1px 0px #FFcccc;
 	font-size: 12px;
+}
+
+#comments li {
+    width: 250px;
+}
+
+.files li, #comments li {
+    margin-bottom: 25px;
 }

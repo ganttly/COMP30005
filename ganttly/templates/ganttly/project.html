@@ -126,28 +126,34 @@
 
 <!-- Project comments -->
 <div class="projectcomments">
-    <strong>Comments</strong>
+    <h2>Comments</h2>
 
-    <!-- form for a new comment submit -->
-    <form id="postcomment" method="post" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
-    </form>
+    <br/>
 
-    <!-- comments tree -->
-    <ul id="comments">
-    {% for c in comments %}
-        <li id="{{ c.id }}" style="margin-left:{{ c.depth|add:c.depth }}em;">
-            <b>{{ c.user }}</b><br/>
-            <i>{{ c.posted }}</i><br/>
-            <p>{{ c.comment }}</p>
-            <p><a href="" class="reply">Reply</a></p>
-        </li>
-    {% empty %}
-        <li>No comments...</li>
-    {% endfor %}
-    </ul>
+    <div style="float: left; width: 275px;">
+        <!-- form for a new comment submit -->
+        <form id="postcomment" method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+    <div style="float: left;">
+        <!-- comments tree -->
+        <ul id="comments">
+        {% for c in comments %}
+            <li id="{{ c.id }}" style="margin-left:{{ c.depth|add:c.depth }}em;">
+                <b>{{ c.user }}</b><br/>
+                <i>{{ c.posted }}</i><br/>
+                <p>{{ c.comment }}</p>
+                <p><a href="" class="reply">Reply</a></p>
+            </li>
+        {% empty %}
+            <li>No comments...</li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
 
 {% endblock content %}

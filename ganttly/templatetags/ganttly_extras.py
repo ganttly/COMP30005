@@ -49,15 +49,18 @@ def drawmonths(start, finish):
         num_days = 0
 
         blocks.append(first.strftime('%B'))
+        can_append = False
 
         if hasattr(diff, 'days'):
             num_days = (finish - start).days
 
         for x in range(0,num_days+1):
-            if first.day == 1:
+            if first.day == 1 and can_append:
                 blocks.append(first.strftime('%B'))
             else:
                 blocks.append("")
+
+            can_append = True
 
             first += timedelta(days=1)
 

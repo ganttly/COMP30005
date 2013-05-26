@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<project_id>\d+)/edit/$', views.project_edit, name='edit_project'),
     url(r'^projects/(?P<project_id>\d+)/delete/$', views.project_delete, name='delete_project'),
     url(r'^projects/(?P<project_id>\d+)/(?P<task_id>\d+)/$', views.task, name='task'),
+    url(r'^projects/(?P<project_id>\d+)/(?P<task_id>\d+)/(?P<file_id>\d+)/$', views.download_file, name='download_file'),
     url(r'^projects/(?P<project_id>\d+)/(?P<task_id>\d+)/start/$', views.task_start, name='start_task'),
     url(r'^projects/(?P<project_id>\d+)/(?P<task_id>\d+)/pause/$', views.task_start, name='pause_task'),
     url(r'^projects/(?P<project_id>\d+)/(?P<task_id>\d+)/finish/$', views.task_finish, name='finish_task'),
@@ -21,3 +22,6 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<project_id>\d+)/(?P<task_id>\d+)/delete/$', views.task_delete, name='delete_task'),
     url(r'^projects/(?P<project_id>\d+)/add/$', views.task_add, name='task'),
 )
+
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+urlpatterns += staticfiles_urlpatterns()

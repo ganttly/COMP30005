@@ -1,12 +1,13 @@
+import os
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.template import Context, loader
-from ganttly.models import Project, Task, ProjectComment, TaskComment
-from ganttly.forms import ProjectForm, TaskForm, UserCreateForm, ProjectCommentForm, TaskCommentForm
+from ganttly.models import Project, Task, ProjectComment, TaskComment, File
+from ganttly.forms import ProjectForm, TaskForm, UserCreateForm, ProjectCommentForm, TaskCommentForm, FileForm
 from util.decorators import secure_required, login_required, project_admin_required
 from datetime import date
 from django.contrib import auth
-
+from ganttly.util.upload import UploadFile
 
 def index(request):
     context = {'content': ''}
@@ -160,51 +161,24 @@ def project_delete(request, project_id):
 
 @login_required
 def task(request, project_id, task_id):
-# <<<<<<< HEAD
-#     comment_form = CommentForm()
-#     file_form = FileForm()
 
-#     if request.method == 'POST':
-#         comment_form = CommentForm(request.POST)
-#         if comment_form.is_valid():
-#             comment = comment_form.save(commit=False)
-#             comment.user = request.user
-#             comment.task = Task.objects.get(id=task_id)
-#             comment.posted
-#             comment.save()
-
-#             comment_form = CommentForm()
-
-#         file_form = FileForm(request.POST)
-#         if file_form.is_valid():
-#             file = file_form.save(commit=False)
-#             file.user = request.user
-#             file.task = Task.objects.get(id=task_id)
-#             file.posted
-#             file.save()
-
-#             file_form = FileForm()
-
-#     action = task_id
-
-#     task = Task.objects.get(id=task_id)
-#     project = Project.objects.get(id=project_id)
-#     comments = Comment.objects.filter(task_id=task_id)
-
-#     forms = [comment_form, file_form]
-#     buttons = ['Add Comment', 'Add File']
-
-# =======
+    #Get task and project objects
+    task = get_object_or_404(Task, id = task_id)
+    project = get_object_or_404(Project, id = project_id)
     
     #Get form case a new comment was posted
-    form = TaskCommentForm(request.POST or None)
-    
+    commentForm = TaskCommentForm(prefix='comment')
+    file_form = FileForm(prefix='upload');
+
     if request.method == "POST":
-        if form.is_valid():
-            new_comment = form.save(commit=False)
+        file_form = FileForm(request.POST, request.FILES, prefix='upload')
+        commentForm = TaskCommentForm(request.POST or None, prefix='comment')
+
+        if commentForm.is_valid():
+            new_comment = commentForm.save(commit=False)
             new_comment.task = get_object_or_404(Task, id=task_id)
             new_comment.user = request.user
-            parent_id = form['parent'].value()
+            parent_id = commentForm['parent'].value()
             
             if parent_id == '':
                 #Set a blank path then save it to get an ID
@@ -225,10 +199,21 @@ def task(request, project_id, task_id):
             new_comment.save()
             return HttpResponseRedirect('.')
 
+        if file_form.is_valid():
+            data = file_form.cleaned_data
 
-    #Get task and project objects
-    task = get_object_or_404(Task, id = task_id)
-    project = get_object_or_404(Project, id = project_id)
+            task_file = File()
+
+            task_file.task = task
+            task_file.description = data['description']
+            task_file.user = request.user
+            task_file.filename = os.path.basename(request.FILES['upload-file'].name)
+            task_file.extension = os.path.splitext(request.FILES['upload-file'].name)[1]
+
+            task_file.save()
+
+            UploadFile(request.FILES['upload-file'], task_file.id)
+            return HttpResponseRedirect('.')
 
     #Retrieve all comments for the task
     comments = TaskComment.objects.filter(task=task_id)
@@ -239,18 +224,17 @@ def task(request, project_id, task_id):
     
     #Order the list of comments by their paths
     comments = sorted(comments, key=lambda x: x.path)
+
+    files = File.objects.filter(task=task_id)
     
     context = Context({
-        'form':form,
+        'forms':[commentForm, file_form],
         'project': project,
         'task': task,
-# <<<<<<< HEAD
-#         'comments': comments,
-#         'forms': forms,
-#         'action': action,
-#         'buttons': buttons,
-# =======
+        'action': '',
+        'button': 'Upload',
         'comments':comments,
+        'files': files
     })
 
     return render(request, 'ganttly/task.html', context)
@@ -363,25 +347,6 @@ def logout(request):
     
 def register(request):
     if request.method == 'POST':
-# <<<<<<< HEAD
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             new_user = form.save()
-#             return HttpResponseRedirect("../projects")
-#     else:
-#         form = UserCreationForm()
-
-#     action = 'register'
-#     button = 'Register'
-
-#     context = Context({
-#         'form': form,
-#         'action': action,
-#         'button': button,
-#     })
-
-#     return render(request, 'ganttly/form.html', context)
-# =======
         form = UserCreateForm(request.POST)
         if form.is_valid():
             new_user = form.save()
@@ -391,3 +356,13 @@ def register(request):
         return render(request, "register.html", {
         'form': form,
         })
+
+@login_required
+def download_file(request, project_id, task_id, file_id):
+    down_file = get_object_or_404(File, id=file_id)
+
+    response = HttpResponse(mimetype='application/force-download')
+    response['Content-Disposition'] = 'attachment; filename=' + down_file.filename
+    response['X-Sendfile'] = 'C:/Users/Brendan/BitNami DjangoStack projects/COMP30005/ganttly/uploads/' + str(down_file.id) + down_file.extension
+
+    return response
