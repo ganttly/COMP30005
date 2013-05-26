@@ -1,12 +1,5 @@
-<<<<<<< HEAD
-from django.forms import ModelForm, Form
-from ganttly.models import Project, Task, Comment
-from django.forms.fields import DateField, CharField, FileField
-=======
-
-from django.forms import ModelForm, HiddenInput, Textarea
-from django.forms.fields import DateField, EmailField, CharField
->>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
+from django.forms import Form, ModelForm, HiddenInput, Textarea
+from django.forms.fields import DateField, EmailField, CharField, FileField
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -45,14 +38,9 @@ class ProjectCommentForm(ModelForm):
     comment = CharField(widget=Textarea(attrs={'cols': 20, 'rows': 5}), label="Your comment:")
     
     class Meta:
-<<<<<<< HEAD
-        model = Comment
+        model = ProjectComment
         fields = ['comment']
 
 class FileForm(Form):
     file  = FileField()
     description = CharField(max_length=140)
-=======
-        model = ProjectComment
-        fields = ['comment']
->>>>>>> fe97be56b91bfbecb4ea6aa0d24b5d24c0a3f9ed
