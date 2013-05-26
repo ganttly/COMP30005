@@ -29,3 +29,15 @@ def project_admin_required(view_func):
             return HttpResponseRedirect('/ganttly/projects/')
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
+
+def project_member_required(view_func):
+    def _wrapped_view_func(request, *args, **kwargs):
+        project = Project.objects.get(id=kwargs['project_id'])
+        team = project.team
+
+        if request.user == project.admin or request.user in team.all():
+            pass
+        else:
+            return HttpResponseRedirect('..')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view_func

@@ -1,10 +1,11 @@
 import os
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.template import Context, loader
 from ganttly.models import Project, Task, ProjectComment, TaskComment, File
 from ganttly.forms import ProjectForm, TaskForm, UserCreateForm, ProjectCommentForm, TaskCommentForm, FileForm
-from util.decorators import secure_required, login_required, project_admin_required
+from util.decorators import secure_required, login_required, project_admin_required, project_member_required
 from datetime import date
 from django.contrib import auth
 from ganttly.util.upload import UploadFile
@@ -14,6 +15,7 @@ def index(request):
     return render(request, 'ganttly/index.html', context)
 
 @login_required     
+@project_member_required
 def project(request, project_id):
 
      #Get form case a new comment was posted
@@ -160,6 +162,7 @@ def project_delete(request, project_id):
     return HttpResponseRedirect('../..')
 
 @login_required
+@project_member_required
 def task(request, project_id, task_id):
 
     #Get task and project objects
@@ -240,16 +243,6 @@ def task(request, project_id, task_id):
     return render(request, 'ganttly/task.html', context)
 
 @login_required
-def task_list(request, project_id):
-    task_list = Task.objects.all
-
-    context = Context({
-        'task_list': task_list,
-    })
-
-    return render(request, 'ganttly/tasks.html', context)
-
-@login_required
 @project_admin_required
 def task_add(request, project_id):
     form = TaskForm()
@@ -301,6 +294,7 @@ def task_edit(request, project_id, task_id):
     return render(request, 'ganttly/form.html', context)
 
 @login_required
+@project_member_required
 def task_start(request, project_id, task_id):
     task = Task.objects.get(pk=task_id)
     if task.has_started:
@@ -319,7 +313,9 @@ def task_delete(request, project_id, task_id):
     delete_task(task_id)
     
     return HttpResponseRedirect('../..')
-    
+
+@login_required
+@project_admin_required
 def delete_task(task_id):
     task = get_object_or_404(Task, id=task_id)
     
@@ -332,6 +328,7 @@ def delete_task(task_id):
     #Delete uploaded documents
 
 @login_required
+@project_admin_required
 def task_finish(request, project_id, task_id):
     task = Task.objects.get(pk=task_id)
     if task.has_started:
@@ -358,11 +355,12 @@ def register(request):
         })
 
 @login_required
+@project_member_required
 def download_file(request, project_id, task_id, file_id):
     down_file = get_object_or_404(File, id=file_id)
 
     response = HttpResponse(mimetype='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=' + down_file.filename
-    response['X-Sendfile'] = 'C:/Users/Brendan/BitNami DjangoStack projects/COMP30005/ganttly/uploads/' + str(down_file.id) + down_file.extension
+    response['X-Sendfile'] = settings.UPLOAD_DIR + str(down_file.id) + down_file.extension
 
     return response
