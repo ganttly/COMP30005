@@ -42,5 +42,5 @@ class ProjectCommentForm(ModelForm):
         fields = ['comment']
 
 class FileForm(Form):
-    file  = FileField()
     description = CharField(max_length=140)
+    file  = FileField()

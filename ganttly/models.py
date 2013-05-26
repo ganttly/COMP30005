@@ -48,9 +48,11 @@ class ProjectComment(models.Model):
 
 class File(models.Model):
     task = models.ForeignKey(Task)
-    name = models.CharField(max_length=50)
-    location = models.CharField(max_length=200)
-    added = models.DateTimeField('added date')
+    user = models.ForeignKey(User)
+    description = models.CharField(max_length=50)
+    filename = models.CharField(max_length=100)
+    extension = models.CharField(max_length=20)
+    added = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name

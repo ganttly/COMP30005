@@ -14,6 +14,7 @@ framework.
 
 """
 import os
+import sys
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "COMP30005.settings")
 
@@ -22,6 +23,10 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "COMP30005.settings")
 # setting points here.
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+
+path = 'C:/Users/Brendan/BitNami DjangoStack projects/COMP30005/'
+if path not in sys.path:
+    sys.path.append(path)
 
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication

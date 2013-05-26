@@ -8,6 +8,6 @@
 <form action="../{{ action }}/" method="post">
     {% csrf_token %}
     {% include "form_snippet.html" %}
-    <p><input type="submit" value="{{ button }}" /></p>
+    <p><input type="submit" value="{{ button }}" class="submit"/></p>
 </form>
 {% endblock %}
