@@ -79,7 +79,7 @@ a {
 }
 
 #content {
-	padding: 25px 25px 0px 25px;
+	padding: 25px 0px 0px 25px;
 }
 
 .project_list li {
@@ -189,7 +189,7 @@ a:hover {
 
 .gantt {
 	overflow-x: scroll;
-	width: 930px;
+	width: 910px;
 	float: left;
 }
 
@@ -249,7 +249,7 @@ li {
 
 .projectcomments {
     margin-left: 2em;
-    width: 100%;
+/*    width: 100%;*/
 	float: left;
 	clear: left;
 	position: relative;
