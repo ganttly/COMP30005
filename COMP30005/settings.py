@@ -82,6 +82,9 @@ STATICFILES_DIRS = (
     "C:/Users/Brendan/BitNami DjangoStack projects/COMP30005/ganttly/static",
 )
 
+#Directory for users to upload files into
+UPLOAD_DIR = 'C:/Users/Brendan/BitNami DjangoStack projects/COMP30005/ganttly/uploads/';
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -135,7 +138,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'ganttly',
-    #'polliebyte',
 )
 
 # A sample logging configuration. The only tangible logging
