@@ -19,28 +19,33 @@ Installation
 ------------
   - Install the BitNami Django stack.
   - Extract Ganttly to your BitNami projects folder.
-  - Edit COMP30005/COMP30005/settings.py and replace all instances of "C:/Users/Brendan/BitNami DjangoStack projects" with the path to your BitNami projects folder.
-  - Edit COMP3005/COMP30005/wsgi.py and replace all instances of "C:/Users/Brendan/BitNami DjangoStack projects" with the path to your BitNami projects folder.
-  - From the 'BitNami DjangoStack' start menu folder, run 'Use BitNami DjangoStack'.
+  - Edit _COMP30005/COMP30005/settings.py_ and replace all instances of _"C:/Users/Brendan/BitNami DjangoStack projects"_ with the path to your BitNami projects folder.
+  - Edit _COMP3005/COMP30005/wsgi.py_ and replace all instances of _"C:/Users/Brendan/BitNami DjangoStack projects"_ with the path to your BitNami projects folder.
+  - From the _'BitNami DjangoStack'_ start menu folder, run _'Use BitNami DjangoStack'_.
   - Navigate to your BitNami projects folder.
-  - Run (without quotes) 'python manage.py syncdb' and follow the instructions to create the Ganttly database.
+  - Run (without quotes) _'python manage.py syncdb'_ and follow the instructions to create the Ganttly database.
   - Close the command line window.
-  - From the mod_xsendfile zip fiel, extract mod_xsendfile.so to the Apache modules directory (the default location is drive:/bitnami/djangostack-x.x.x-x/apache2/modules).
-  - Edit the apache2/conf/http.conf file and add the following
+  - From the mod_xsendfile zip file, extract mod_xsendfile.so to the Apache modules directory (the default location is _drive:/bitnami/djangostack-x.x.x-x/apache2/modules_).
+  - Edit the _apache2/conf/http.conf_ file and add the following
   
-    1) Under the other 'LoadModule' statements, add:
+    1) Under the other _'LoadModule'_ statements, add:
+
           LoadModule xsendfile_module modules/mod_xsendfile.so
 
-    2) Change the DocumentRoot to (replace the {...} with the actual path!):
+    2) Change the _DocumentRoot_ to (replace the {...} with the actual path!):
+    
           DocumentRoot "{Path to BitNami projects folder}/COMP30005"
       
-    3) Change '<Directory "xxxx">' to (replace the {...} with the actual path!):
+    3) Change _\<Directory "xxxx"\>_ to (replace the {...} with the actual path!):
+    
           <Directory "{Path to BitNami projects folder}/COMP30005">
           
-    4) Find the '<IfModule alias_module'>' line. In that block, add:
+    4) Find the _\<IfModule alias\_module\>_ line. In that block, add:
+    
           Alias /static/ "{Path to BitNami projects folder}/COMP30005/ganttly/static/"
           
     5) Add the very end of the file, add the following:
+    
           XSendFilePath "{Path to BitNami projects folder}/COMP30005/ganttly/uploads/"
           XSendFile on
 
@@ -48,4 +53,4 @@ Installation
           WSGIPythonHome "{Path to BitNami Python folder}"
           WSGIScriptAlias / "{Path to BitNami projects folder}/COMP30005/COMP30005/wsgi.py"
           
-  - Run Apache. In a browser, navigate to to http://localhost/ganttly.
+  - Run Apache. In a browser, navigate to to _http://localhost/ganttly_.
