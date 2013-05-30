@@ -11,8 +11,11 @@ from django.contrib import auth
 from ganttly.util.upload import UploadFile
 
 def index(request):
-    context = {'content': ''}
-    return render(request, 'ganttly/index.html', context)
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('projects/')
+    else:
+        context = {'content': ''}
+        return render(request, 'ganttly/index.html', context)
 
 @login_required     
 @project_member_required

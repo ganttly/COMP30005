@@ -2,7 +2,14 @@
 
 {% load url from future %}
 
-{% block content %}
+{% block body %}
+<div id="header">
+  {% load staticfiles %}
+  <!-- <img src="{% static "ganttly.png" %}"/> -->
+    <h1>Ganttly</h1>
+    <a href="/ganttly/register/">Register</a>
+</div>
+<div id="content">
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
@@ -22,7 +29,7 @@
 
       <input type="hidden" name="login" value="/ganttly" />
       <input type="hidden" name="next" value="projects/" />
-      <input type="submit" value="login" />
-   </form><a href="/ganttly/register/">Register</a>
-
-{% endblock %}
+      <input type="submit" value="login" class="submit"/>
+   </form>
+</div>
+{% endblock body %}
