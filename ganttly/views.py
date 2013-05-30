@@ -1,10 +1,12 @@
 import os
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404, get_list_or_404
+from django.core.mail import send_mail
 from django.template import Context, loader
+from django.contrib.auth.models import User
 from ganttly.models import Project, Task, ProjectComment, TaskComment, File
-from ganttly.forms import ProjectForm, TaskForm, UserCreateForm, ProjectCommentForm, TaskCommentForm, FileForm
+from ganttly.forms import ProjectForm, EditProjectForm, TaskForm, UserCreateForm, ProjectCommentForm, TaskCommentForm, FileForm
 from util.decorators import secure_required, login_required, project_admin_required, project_member_required
 from datetime import date
 from django.contrib import auth
@@ -47,9 +49,10 @@ def project(request, project_id):
             new_comment.save()
             return HttpResponseRedirect('.')
 
-    # Get the project and tasks objects
+    # Get the project, team and tasks objects
     project = Project.objects.get(id=project_id)
     task_list = Task.objects.filter(project=project_id).order_by('start')
+    team = project.team.all()
 
     #Retrieve all comments for the project
     comments = ProjectComment.objects.filter(project=project_id)
@@ -72,6 +75,7 @@ def project(request, project_id):
 
     context = Context({
         'project': project,
+        'team': team,
         'task_list': task_list,
         'form': form,
         'comments': comments,
@@ -84,8 +88,7 @@ def project(request, project_id):
 
 @login_required
 def project_list(request):
-    project_list = Project.objects.filter(admin=request.user)
-    #project_list = Project.objects.filter(team=request.user)
+    project_list = Project.objects.filter(team=request.user)
 
     context = Context({
         'project_list': project_list,
@@ -97,15 +100,42 @@ def project_list(request):
 def project_add(request):
     form = ProjectForm()
 
+    # if form is submitted
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
+            # save new project with form inputs
             project = form.save(commit=False)
+            # set admin as user and part of team
             project.admin = request.user
             project.save()
-
-            return HttpResponseRedirect('..')
-
+            project.team.add(request.user)
+            
+            # adding users to the project team
+            nonusers = []
+            for usermail in request.POST.getlist('members'):
+                try:
+                    # add user if user exists
+                    user = User.objects.get(email=usermail)
+                    project.team.add(user)
+                except User.DoesNotExist:
+                    # send email with invitation if user not on ganttly
+                    nonusers.append(usermail)
+                    send_mail('Ganttly project invitation', 
+                    request.user.first_name + ' ' + request.user.last_name + 
+                    ' wants you in a Ganttly project\nRegister in Ganttly to be part of it', 
+                    'ganttly@gmail.com', [usermail], fail_silently=True)
+            project.save()
+            # if there are non ganttly users notify project creator
+            if nonusers:
+                context = Context({
+                    'project': project,
+                    'nonusers': nonusers,
+                })
+                return render_to_response('ganttly/projectcreated.html', context)
+            else:
+                return HttpResponseRedirect('../..')
+            
     action = 'add'
     button = 'Add Project'
 
@@ -115,7 +145,7 @@ def project_add(request):
         'button': button,
     })
 
-    return render(request, 'ganttly/form.html', context)
+    return render(request, 'ganttly/addproject.html', context)
 
 @login_required
 @project_admin_required
@@ -124,7 +154,7 @@ def project_edit(request, project_id):
     project = get_object_or_404(Project, id=project_id)
 
     if request.method == 'POST':
-        form = ProjectForm(request.POST or None, instance=project)
+        form = EditProjectForm(request.POST or None, instance=project)
         if form.is_valid():
             project = form.save(commit=False)
             project.save()
@@ -314,8 +344,6 @@ def task_delete(request, project_id, task_id):
     
     return HttpResponseRedirect('../..')
 
-@login_required
-@project_admin_required
 def delete_task(task_id):
     task = get_object_or_404(Task, id=task_id)
     

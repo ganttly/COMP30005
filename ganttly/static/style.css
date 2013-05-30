@@ -248,13 +248,12 @@ li {
 }
 
 .projectcomments {
-    margin-left: 2em;
+    margin-left: 4em;
 /*    width: 100%;*/
 	float: left;
-	clear: left;
 	position: relative;
 	padding: 0 0 1em 0;
-	margin-top: 2em;
+	/*margin-top: 2em;*/
 	overflow: hidden;
 }
 
@@ -314,9 +313,42 @@ li {
 
 /*#postcomment input {*/
 .submit {
-    height:30px;
-    width:100px;
+    position: relative;
+    float: left;
+    clear: left;
+    margin-top: 15px;
     margin-bottom: 20px;
+    padding: 7px;  
+}
+
+.button {
+    position: relative;
+    margin-left:8px;    
+    background-color:#256E4C;
+    border: none;
+    display:inline-block;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:23px;
+    font-weight:bold;
+    padding:0px 10px;
+    text-decoration:none;
+}
+
+.button:hover {
+    background-color:#4A9673;
+}
+
+.button:active {
+    position:relative;
+    top:1px;
+}
+
+.teamfield {
+    margin: 5px 5px 0px 0px;
+    float:left;
+    position:relative;
+    clear:right;
 }
 
 .menu li {

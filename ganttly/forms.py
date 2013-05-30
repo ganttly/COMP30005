@@ -11,9 +11,16 @@ class UserCreateForm(UserCreationForm):
         fields = ["username", "email", "first_name", "last_name"]
 
 class ProjectForm(ModelForm):
+
     class Meta:
         model = Project
-        fields = ['name','description']
+        fields = ['name','description', 'team']
+        
+class EditProjectForm(ModelForm):
+
+    class Meta:
+        model = Project
+        fields = ['name','description', 'team']
 
 class TaskForm(ModelForm):
     start = DateField(widget=SelectDateWidget)

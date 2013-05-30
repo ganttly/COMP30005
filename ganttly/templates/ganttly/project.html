@@ -100,6 +100,7 @@
     {% endfor %}
 </div>
 </div>
+
 <div id="key" style="margin-right: 15px; width: 150px; float: right; border: 1px solid #cecece; padding: 3px;">
     <h2>Key</h2>
     <div style=" clear: left;">
@@ -125,6 +126,17 @@
 <br/>
 
 <!-- Project comments -->
+<div id="team" style="margin-right: 15px; width: 300px; float: left; border: 1px solid #cecece; padding: 3px;">
+    <h2>Team Members</h2>
+    {% for member in team %}
+    <p>Name: {{ member.first_name }} {{ member.last_name }}</p>
+    <p>Email: {{ member.email }}</p>
+    <br />
+    {% empty %}
+    <p>There are no members assigned...</p>
+    {% endfor %}
+    
+</div>
 <div class="projectcomments">
     <h2>Comments</h2>
 

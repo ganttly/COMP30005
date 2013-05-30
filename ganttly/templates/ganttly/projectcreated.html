@@ -1,0 +1,22 @@
+{% extends 'base_loggedin.html' %}
+
+{% block content %}
+
+<!-- Back button -->
+<a href="/ganttly/projects/">&lt;&lt; Back to projects</a>
+<br />
+<br />
+
+<h2>Project {{ project.name }} created with success!</h2>
+<br />
+
+{% if nonusers %}
+<p>Theses users are not on Ganttly and an invitation to join was sent to them:</p>
+<ul>
+    {% for users in nonusers %}
+    <li>{{ users }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
