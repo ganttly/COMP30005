@@ -13,7 +13,7 @@ class UserCreateForm(UserCreationForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ['name','description', 'team']
+        fields = ['name','description']
         
 class EditProjectForm(ModelForm):
     class Meta:

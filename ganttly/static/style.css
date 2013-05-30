@@ -321,6 +321,10 @@ li {
     padding: 7px;  
 }
 
+.register input[type='text'], .register input[type='password'] {
+    margin: 0px 10px 10px 10px;
+}
+
 .button {
     position: relative;
     margin-left:8px;    
@@ -348,7 +352,7 @@ li {
     margin: 5px 5px 0px 0px;
     float:left;
     position:relative;
-    clear:right;
+    clear:left;
 }
 
 .menu li {

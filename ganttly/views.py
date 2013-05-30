@@ -126,8 +126,8 @@ def project_add(request):
                     nonusers.append(usermail)
                     send_mail('Ganttly project invitation', 
                     request.user.first_name + ' ' + request.user.last_name + 
-                    ' wants you in a Ganttly project\nRegister in Ganttly to be part of it', 
-                    'ganttly@gmail.com', [usermail], fail_silently=True)
+                    ' wants you in a Ganttly project\nRegister in Ganttly to be part of it\nJoin us on www.ganttly.com\n\nGanttly Team', 
+                    'ganttlyapp@gmail.com', [usermail], fail_silently=True)
             project.save()
             # if there are non ganttly users notify project creator
             if nonusers:
@@ -381,7 +381,7 @@ def register(request):
             return HttpResponseRedirect("..")
     else:
         form = UserCreateForm()
-        return render(request, "register.html", {
+        return render(request, "ganttly/register.html", {
         'form': form,
         })
 
