@@ -1,6 +1,30 @@
 <!-- JQuery script -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
+<script type="text/javascript">
+$(document).ready(function() {
+// Tooltip only Text
+$('.block').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip"></p>')
+            .html(title)
+            .appendTo('body')
+            .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX + 20; //Get X coordinates
+        var mousey = e.pageY + 10; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+});
+});
+</script>
+
 <script>
     $(document).ready(function() {
 
@@ -93,7 +117,25 @@
             style="
                 width:{{ task.start|countdays:task.finish|add:1|multiply:40 }}px;
                 margin-left: {{ first_date|countdays:task.start|multiply:40 }}px
-        ">
+            "
+            title="
+            <h2>{{ task.name }}</h2>
+            <dl>
+                <dt>Assigned to:</dt>
+                <!-- shows list of users assigned to the task -->
+                <dd>
+                    {% for user in task.assigned_to.all %}
+                        {{ user.first_name }} {{ user.last_name }}<br/>
+                    {% endfor %}
+                </dd>
+                
+                <dt>Start:</dt>
+                <dd>{{ task.start }}</dd>
+
+                <dt>Finish:</dt>
+                <dd>{{ task.finish }}</dd>
+            </dl>"
+        >
         </div>
         </a>
         <div class="clear"></div>
