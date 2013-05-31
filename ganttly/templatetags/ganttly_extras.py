@@ -44,25 +44,25 @@ def drawmonths(start, finish):
     blocks = []
 
     if hasattr(start, 'day'):
-        first = datetime(start.year, start.month, start.day, 0, 0, 0)
+        day = datetime(start.year, start.month, start.day, 0, 0, 0)
         diff = (finish - start)
         num_days = 0
 
-        blocks.append(first.strftime('%B'))
+        blocks.append(day.strftime('%B'))
         can_append = False
 
         if hasattr(diff, 'days'):
             num_days = (finish - start).days
 
         for x in range(0,num_days+1):
-            if first.day == 1 and can_append:
-                blocks.append(first.strftime('%B'))
-            else:
+            if day.day == 1 and can_append:
+                blocks.append(day.strftime('%B'))
+            elif(can_append):
                 blocks.append("")
 
             can_append = True
 
-            first += timedelta(days=1)
+            day += timedelta(days=1)
 
     return blocks
 

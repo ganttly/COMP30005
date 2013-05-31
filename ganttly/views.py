@@ -156,15 +156,17 @@ def project_edit(request, project_id):
 
     project = get_object_or_404(Project, id=project_id)
 
+    form = ProjectForm(instance=Project.objects.get(pk=project_id))
+
     if request.method == 'POST':
-        form = EditProjectForm(request.POST or None, instance=project)
+        # form = EditProjectForm(request.POST or None, instance=project)
+        form = ProjectForm(request.POST or None, instance=project)
+
         if form.is_valid():
             project = form.save(commit=False)
             project.save()
 
             return HttpResponseRedirect('..')
-
-    form = ProjectForm(instance=Project.objects.get(pk=project_id))
 
     action = 'edit'
     button = 'Edit Project'
@@ -293,6 +295,10 @@ def task_add(request, project_id):
     action = 'add'
     button = 'Add Task'
 
+    project = Project.objects.get(pk=project_id)
+    team = project.team.values_list('id','first_name')
+    form.fields["assigned_to"].choices = team
+
     context = Context({
         'form': form,
         'action': action,
@@ -317,6 +323,10 @@ def task_edit(request, project_id, task_id):
 
     action = 'edit'
     button = 'Edit Task'
+
+    project = Project.objects.get(pk=project_id)
+    team = project.team.values_list('id','first_name')
+    form.fields["assigned_to"].choices = team
 
     context = Context({
         'form': form,
@@ -374,16 +384,17 @@ def logout(request):
     return HttpResponseRedirect('/ganttly')
     
 def register(request):
+    form = UserCreateForm()
+
     if request.method == 'POST':
         form = UserCreateForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             return HttpResponseRedirect("..")
-    else:
-        form = UserCreateForm()
-        return render(request, "ganttly/register.html", {
+    
+    return render(request, "ganttly/register.html", {
         'form': form,
-        })
+    })
 
 @login_required
 @project_member_required

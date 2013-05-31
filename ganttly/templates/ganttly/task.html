@@ -32,6 +32,7 @@
 
 <!-- Menu for task management options -->
 <ul class="menu">
+{% if user in task.assigned_to.all or user == project.admin %}
     {% if task.is_completed %}
     <li>[Start]</li>
     <li>[Pause]</li>
@@ -49,6 +50,7 @@
     <li><a href="edit">[Edit Task]</a></li>
     <li><a href="delete">[Delete Task]</a></li>
     {% endif %}
+{% endif %}
 </ul>
 
 <br/>

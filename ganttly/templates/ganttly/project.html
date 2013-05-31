@@ -3,25 +3,25 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-// Tooltip only Text
-$('.block').hover(function(){
-        // Hover over code
-        var title = $(this).attr('title');
-        $(this).data('tipText', title).removeAttr('title');
-        $('<p class="tooltip"></p>')
-            .html(title)
-            .appendTo('body')
-            .fadeIn('slow');
-}, function() {
-        // Hover out code
-        $(this).attr('title', $(this).data('tipText'));
-        $('.tooltip').remove();
-}).mousemove(function(e) {
-        var mousex = e.pageX + 20; //Get X coordinates
-        var mousey = e.pageY + 10; //Get Y coordinates
-        $('.tooltip')
-        .css({ top: mousey, left: mousex })
-});
+    // Tooltip only Text
+    $('.block').hover(function(){
+            // Hover over code
+            var title = $(this).attr('title');
+            $(this).data('tipText', title).removeAttr('title');
+            $('<p class="tooltip"></p>')
+                .html(title)
+                .appendTo('body')
+                .fadeIn('slow');
+    }, function() {
+            // Hover out code
+            $(this).attr('title', $(this).data('tipText'));
+            $('.tooltip').remove();
+    }).mousemove(function(e) {
+            var mousex = e.pageX + 20; //Get X coordinates
+            var mousey = e.pageY + 10; //Get Y coordinates
+            $('.tooltip')
+            .css({ top: mousey, left: mousex })
+    });
 });
 </script>
 
@@ -143,7 +143,7 @@ $('.block').hover(function(){
 </div>
 </div>
 
-<div id="key" style="margin-right: 15px; width: 150px; float: right; border: 1px solid #cecece; padding: 3px;">
+<div id="key" style="margin: 25px 15px 0px 0px; width: 150px; float: right; border: 1px solid #cecece; padding: 3px;">
     <h2>Key</h2>
     <div style=" clear: left;">
         <div class="block upcoming" style="width:20px; margin-right: 10px;"></div>
@@ -198,7 +198,7 @@ $('.block').hover(function(){
         <ul id="comments">
         {% for c in comments %}
             <li id="{{ c.id }}" style="margin-left:{{ c.depth|add:c.depth }}em;">
-                <b>{{ c.user }}</b><br/>
+                <b>{{ c.user.first_name }} {{ c.user.last_name }}</b><br/>
                 <i>{{ c.posted }}</i><br/>
                 <p>{{ c.comment }}</p>
                 <p><a href="" class="reply">Reply</a></p>

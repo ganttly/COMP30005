@@ -382,8 +382,6 @@ li {
 .files li, #comments li {
     margin-bottom: 25px;
 }
-<<<<<<< HEAD
-=======
 
 .tooltip {
     display:none;
@@ -411,4 +409,3 @@ li {
 .tooltip dd {
     color: white;
 }
->>>>>>> origin

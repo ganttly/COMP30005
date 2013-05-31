@@ -2,7 +2,14 @@
 
 {% block title %}Create an account{% endblock %}
 
-{% block content %}
+{% block body %}
+<div id="header">
+  {% load staticfiles %}
+  <!-- <img src="{% static "ganttly.png" %}"/> -->
+    <h1>Ganttly</h1>
+    <a href="/ganttly/register/">Register</a>
+</div>
+<div id="content">
   <h1>Create an account</h1>
 
   <form class="register" action="" method="POST"> {% csrf_token %}
@@ -10,4 +17,5 @@
       <input type="submit" value="Create the account">
     
 </form>
-{% endblock %}
+</div>
+{% endblock body %}
